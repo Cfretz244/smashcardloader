@@ -2,6 +2,11 @@
 #include "Core/HW/GCMemcard/GCMemcard.h"
 
 int main(int argc, char** argv) {
+  if (argc != 2) {
+    std::cout << "Please be a good user and give me a memcard path" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   std::cout << "About to attempt to load path " << argv[1] << " as a memory card..." << std::endl;
   auto [error, memcard] = Memcard::GCMemcard::Open(argv[1]);
   if (memcard) {
