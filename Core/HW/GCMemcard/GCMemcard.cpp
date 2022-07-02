@@ -309,7 +309,12 @@ bool GCMemcard::IsShiftJIS() const
 
 bool GCMemcard::Save()
 {
-  File::IOFile mcdFile(m_filename, "wb");
+  Save(m_filename);
+}
+
+bool GCMemcard::Save(std::string const& filename)
+{
+  File::IOFile mcdFile(filename, "wb");
   mcdFile.Seek(0, File::SeekOrigin::Begin);
 
   mcdFile.WriteBytes(&m_header_block, BLOCK_SIZE);
