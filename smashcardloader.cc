@@ -7,10 +7,39 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  std::cout << "About to attempt to load path " << argv[1] << " as a memory card..." << std::endl;
+//  std::cout << "About to attempt to load path " << argv[1] << " as a memory card..." << std::endl;
   auto [error, memcard] = Memcard::GCMemcard::Open(argv[1]);
   if (memcard) {
-    std::cout << "memcard successfully loaded!" << std::endl;
+    //std::cout << static_cast<u32>(memcard->GetNumFiles()) << std::endl;
+    for (auto i=0;i < memcard->GetNumFiles(); ++i)
+    {
+      auto index = memcard->GetFileIndex(i);
+      auto saveMetadata = memcard->GetSaveComments(index);
+      if (saveMetadata)
+      {
+  //      std::cout << "Content for file: " << static_cast<u32>(i) << saveMetadata->first << '\n' << saveMetadata->second << std::endl;
+      }
+    }
+    auto data(memcard->GetSaveDataBytes(memcard->GetFileIndex(0)));
+    if (data)
+    {
+      int j=0, lineCount = 0;
+      for (int i=0; i<data->size();++i)
+      {
+        if (j == 0)
+        {
+          std::cout << lineCount << ": ";
+        }
+        printf("%02x ", (*data)[i]);
+        if (j++ == 31)
+        {
+          std::cout << '\n';
+          j = 0;
+          lineCount++;
+        }
+      }
+    }
+    //std::cout << "memcard successfully loaded!" << std::endl;
   } else {
     std::cout << "memcard loading failed..." << std::endl;
 
