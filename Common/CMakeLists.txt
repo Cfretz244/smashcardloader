@@ -141,8 +141,6 @@ PUBLIC
   fmt::fmt
   ${MBEDTLS_LIBRARIES}
   minizip-ng
-
-PRIVATE
   ${CURL_LIBRARIES}
   ${ICONV_LIBRARIES}
   png

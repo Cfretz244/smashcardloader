@@ -112,7 +112,7 @@ set(MBEDTLS_LIBRARIES mbedtls mbedcrypto mbedx509)
 set(CURL_LIBRARIES curl)
 set(ICONV_LIBRARIES iconv)
 
-add_compile_options(-I${CMAKE_SOURCE_DIR} -I${CMAKE_SOURCE_DIR}/mbedtls/include -I${CMAKE_SOURCE_DIR}/enet/include -I${CMAKE_SOURCE_DIR}/SFML/include -I${CMAKE_SOURCE_DIR}/libusb/libusb/libusb/ -I${CMAKE_SOURCE_DIR}/picojson -I${CMAKE_SOURCE_DIR}/soundtouch -I${CMAKE_SOURCE_DIR}/LZO)
+add_compile_options(-I${CMAKE_SOURCE_DIR} -I${CMAKE_SOURCE_DIR}/libiconv-1.14/include -I${CMAKE_SOURCE_DIR}/mbedtls/include -I${CMAKE_SOURCE_DIR}/enet/include -I${CMAKE_SOURCE_DIR}/SFML/include -I${CMAKE_SOURCE_DIR}/libusb/libusb/libusb/ -I${CMAKE_SOURCE_DIR}/picojson -I${CMAKE_SOURCE_DIR}/soundtouch -I${CMAKE_SOURCE_DIR}/LZO)
 
 add_subdirectory(fmt)
 add_subdirectory(zlib)
@@ -146,4 +146,4 @@ add_subdirectory(VideoCommon)
 add_subdirectory(Core)
 
 add_executable(smashcardloader smashcardloader.cc)
-target_link_libraries(smashcardloader core)
+target_link_libraries(smashcardloader core common)
