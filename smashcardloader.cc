@@ -1,6 +1,5 @@
 /*----- System Includes -----*/
 
-#include <dart.h>
 #include <cstdio>
 #include <random>
 #include <limits>
@@ -9,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <type_traits>
+#include <unordered_set>
 
 /*----- Local Includes -----*/
 
@@ -79,18 +79,6 @@ bool some_of(F&& func, Args&&... args) {
   return !all_of(std::forward<F>(func), std::forward<Args>(args)...);
 }
 
-template <class F, class C>
-bool all_in(F&& func, C&& container) {
-  for (auto&& val : std::forward<C>(container)) {
-    std::forward<F>(func)(std::forward<decltype(val)>(val));
-  }
-}
-
-template <class F, class C>
-bool none_in(F&& func, C&& container) {
-  return !all_of(std::forward<C>(container), std::forward<F>(func));
-}
-
 template <class T, class U>
 forward_like_t<T, U> forward_like(U&& val) noexcept {
   return static_cast<forward_like_t<T, U>>(val);
@@ -105,7 +93,7 @@ void for_all(F&& func, C&& container, Cs&&... cs) {
   std::size_t count = 0;
   std::tuple iterators {container.begin(), cs.begin()...};
   while (std::get<0>(iterators) != container.end()) {
-    std::apply([&func, &count] (auto&& it, auto&&... its) {
+    std::apply([&func, &count] (auto& it, auto&... its) {
       // Compute whether our callable would like an explicit count
       constexpr bool takes_count = std::is_invocable_v<
         F,
@@ -218,7 +206,13 @@ void print_diffs(region_map const& diffs) {
   int current = 0;
   for (auto& regions : diffs) {
     fmt::println("Printing diff ranges for block {}:", current++);
-    fmt::println(dart::packet {regions}.to_json());
+    std::string region = "[";
+    for (auto& [start, end] : regions) {
+      region += fmt::format(" [{}, {}],", start, end);
+    }
+    region.pop_back();
+    region += " ]";
+    fmt::println(region);
   }
 }
 

@@ -309,7 +309,7 @@ bool GCMemcard::IsShiftJIS() const
 
 bool GCMemcard::Save()
 {
-  Save(m_filename);
+  return Save(m_filename);
 }
 
 bool GCMemcard::Save(std::string const& filename)
